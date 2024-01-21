@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js";
-        import { getFirestore, collection, query, orderBy, getDocs, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { getFirestore, collection, query, orderBy, getDocs, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
         
         
         const firebaseConfig = {
@@ -14,8 +14,19 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebas
 
         // Initialize Firebase
         const app = initializeApp(firebaseConfig);
-        const analytics = getAnalytics(app);
         const db = getFirestore(app);
+        const auth = getAuth(app);
+
+        // Check authentication status
+        onAuthStateChanged(auth, (user) => {
+            if (!user) {
+                // User is not authenticated, redirect to login page
+                window.location.href = 'admin_login.html';
+            } else {
+                console.log('User is authenticated:', user);
+            }
+        });
+
 
         // Get the user data from Firestore
         const userDataRef = collection(db, 'userData');
@@ -333,6 +344,8 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebas
         renderAssessmentResultBarChart('All Language', 'All Classification');
         
 
+
+
         // Function to fetch data based on the selected language
         const fetchDataForAllUsers = () => {
             const selectedLanguage = document.getElementById('language').value;
@@ -390,6 +403,13 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebas
             totalInteractData.signAlphaInteract /= numUsers;
             totalInteractData.spellInteract /= numUsers;
 
+            // Round the averages to one decimal place
+            totalInteractData.createInteract = totalInteractData.createInteract.toFixed(1);
+            totalInteractData.findInteract = totalInteractData.findInteract.toFixed(1);
+            totalInteractData.lessonInteract = totalInteractData.lessonInteract.toFixed(1);
+            totalInteractData.signAlphaInteract = totalInteractData.signAlphaInteract.toFixed(1);
+            totalInteractData.spellInteract = totalInteractData.spellInteract.toFixed(1);
+
             // Create the doughnut chart with average values
             createDonutChart(totalInteractData);
             };
@@ -440,6 +460,25 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebas
 
 
             fetchDataForAllUsers();
+
+            const logoutButton = document.getElementById('logoutLink');
+
+            logoutButton.addEventListener('click', async () => {
+                try {
+                    // Sign out the user
+                    await signOut(auth);
+                    // Redirect to the login page after logout
+                    window.location.href = 'admin_login.html';
+                } catch (error) {
+                    console.error('Error during logout:', error);
+                }
+            });
+
+            
+
+
+
+
         
 
 

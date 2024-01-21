@@ -1,0 +1,22 @@
+* {
+    box-sizing: border-box;
+    margin:0;
+    padding: 0;
+}
+
+body {
+    display: flex;
+    min-height: 100vh;
+    align-items: center;
+    justify-content: center;
+    background-color: #e4e9f7;
+    font-family: 'Signika', sans-serif; 
+}
+
+img {
+    padding-top: 20px;
+}
+
+.card-body {
+    padding: 30px;
+}
