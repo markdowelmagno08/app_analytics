@@ -1,0 +1,119 @@
+* {
+    box-sizing: border-box;
+    margin:0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Signika', sans-serif; 
+    background-color: #e4e9f7;
+    
+
+}
+
+
+
+.navbar {
+    box-shadow: 0 4px 6px -6px #999;
+    background-color: #f3f3f3;
+    padding: 10px;
+
+}
+.minibar-container {
+    margin-top: 120px; 
+    margin-bottom: 50px;
+}
+
+.navbar img {
+    width: 50px;
+    height: auto;
+    margin-right: 10px;
+}
+
+
+.chart-canvas {
+    height: 50vh;
+    width: 50vw;
+    
+
+}
+
+
+.chart-container {
+    border-radius: 10px; 
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
+    border: 1px solid #ccc; 
+    padding: 20px;  
+    position: relative;
+    margin: 15px 0;
+    user-select: none;
+    background: white;
+    
+}
+
+.user-container {
+    border-radius: 10px; 
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
+    border: 1px solid #ccc; 
+    padding: 20px;  
+    position: relative;
+    margin: 15px 0;
+    user-select: none;
+    background: white;
+    
+}
+
+.feedback-container {
+    border-radius: 10px; 
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
+    border: 1px solid #ccc; 
+    padding: 20px;  
+    position: relative;
+    margin: 15px 0;
+    user-select: none;
+    background: white;
+}
+
+#userTable {
+    font-size: 16px;
+}
+
+label {
+    font-size: 15px;
+}
+
+
+
+#prev-button,
+#next-button,
+#previousButton,
+#nextButton {
+    color: rgb(0, 129, 0);
+    border-color: rgb(0, 129, 0);
+}
+
+#prev-button:hover,
+#next-button:hover,
+#previousButton:hover,
+#nextButton:hover {
+    color: white;
+    background-color: rgb(0, 129, 0);
+}
+
+
+select.form-select {
+    border: 1px solid rgb(131, 131, 131); 
+    border-radius: 4px; 
+}
+
+
+
+
+
+
+
+
+
+
+
+
