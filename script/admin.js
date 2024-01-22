@@ -12,54 +12,64 @@ import { getFirestore, collection, getDocs, query, where } from "https://www.gst
         appId: "1:820561191348:web:925ea006b96f2f164952e1",
     };
 
-    // Initialize Firebase
+
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getFirestore(app);
 
-    // Get references to form elements
+
     const loginForm = document.getElementById('loginForm');
     const emailInput = document.getElementById('email');
     const passwordInput = document.getElementById('password');
+    const loader = document.getElementById('loader');
+    
 
-    // Add event listener to form submission
-    // Add event listener to form submission
-loginForm.addEventListener('submit', async function (event) {
-    event.preventDefault(); // Prevent the default form submission
 
-    const email = emailInput.value;
-    const password = passwordInput.value;
 
-    try {
-        // Check if the provided email matches any document in the "admin" collection
-        const adminQuery = query(collection(db, 'admin'), where('email', '==', email));
-        const adminSnapshot = await getDocs(adminQuery);
 
-        if (adminSnapshot.docs.length > 0) {
-            // User with the provided email exists in the "admin" collection
-            // Try to sign in with the provided email and password
-            try {
-                await signInWithEmailAndPassword(auth, email, password);
-                console.log('User logged in successfully!');
-
-                resetId.reset();
-                // Redirect to admin.html
-                window.location.href = 'admin.html';
-            } catch (signInError) {
+    loginForm.addEventListener('submit', async function (event) {
+        event.preventDefault(); // Prevent the default form submission
+    
+        const email = emailInput.value;
+        const password = passwordInput.value;
+    
+        try {
+            // Show the loader while processing the login
+            loader.style.display = 'flex';
+    
+            // Check if the provided email matches any document in the "admin" collection
+            const adminQuery = query(collection(db, 'admin'), where('email', '==', email));
+            const adminSnapshot = await getDocs(adminQuery);
+    
+            if (adminSnapshot.docs.length > 0) {
+                // User with the provided email exists in the "admin" collection
+                // Try to sign in with the provided email and password
+                try {
+                    await signInWithEmailAndPassword(auth, email, password);
+                    console.log('User logged in successfully!');
+    
+                    // Reset the form
+                    resetId.reset();
+    
+                    // Redirect to admin.html
+                    window.location.href = 'admin.html';
+                } catch (signInError) {
+                    // Display alert for Incorrect Credentials
+                    incorrectCredentialsAlert.style.display = 'block';
+                    console.error('Invalid email or password.');
+                }
+            } else {
                 // Display alert for Incorrect Credentials
-                document.getElementById('incorrectCredentialsAlert').style.display = 'block';
+                incorrectCredentialsAlert.style.display = 'block';
                 console.error('Invalid email or password.');
             }
-        } else {
-            // Display alert for Incorrect Credentials
-            document.getElementById('incorrectCredentialsAlert').style.display = 'block';
-            console.error('Invalid email or password.');
+        } catch (error) {
+            // Handle errors
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.error('Error logging in:', errorCode, errorMessage);
+        } finally {
+            // Hide the loader when the login process is complete
+            loader.style.display = 'none';
         }
-    } catch (error) {
-        // Handle errors
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.error('Error logging in:', errorCode, errorMessage);
-    }
-});
-
+    });
