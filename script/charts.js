@@ -462,8 +462,17 @@ import { getFirestore, collection, query, orderBy, getDocs, doc, getDoc } from "
             fetchDataForAllUsers();
 
             const logoutButton = document.getElementById('logoutLink');
-
-            logoutButton.addEventListener('click', async () => {
+            const confirmLogoutButton = document.getElementById('confirmLogoutBtn');
+            
+            logoutButton.addEventListener('click', () => {
+                // Show the modal when the logout link is clicked
+                const logoutModal = new bootstrap.Modal(document.getElementById('logoutModal'), {
+                    keyboard: false
+                });
+                logoutModal.show();
+            });
+            
+            confirmLogoutButton.addEventListener('click', async () => {
                 try {
                     // Sign out the user
                     await signOut(auth);

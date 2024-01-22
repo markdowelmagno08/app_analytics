@@ -107,6 +107,44 @@ select.form-select {
 }
 
 
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+
+th, td {
+    padding: 10px;
+    text-align: left;
+}
+
+/* Responsive font sizes for tables */
+@media (max-width: 767px) {
+    table, th, td {
+        font-size: 12px;
+    }
+    img {
+        max-width: 30%; /* Adjust image size for smaller screens */
+        height: auto;
+    }
+    .view-feedback-btn {
+        font-size: 12px; /* Adjust font size for "View Feedback" button */
+    }
+
+    .view-feedback-btn i {
+        font-size: 14px; /* Adjust icon size for "View Feedback" button */
+        margin-right: 4px; /* Add margin to the right of the icon */
+    }
+
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+    table, th, td {
+        font-size: 15px;
+    }
+}
+
 
 
 
