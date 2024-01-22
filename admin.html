@@ -193,7 +193,7 @@
                 <select id="userTypeFilter" class="form-select">
                     <option value="All">All</option>
                     <option value="Real">Registered</option>
-                    <option value="Anonymous">Anonymous</option>
+                    <option value="Unregistered">Unregistered</option>
                 </select>
             </div>
             
@@ -565,20 +565,58 @@
         
         renderFeedbackTable(1, 10);
 
-        // Add an event listener to the "Export as PDF" button
-        document.getElementById('exportPdfBtn').addEventListener('click', () => {
-                const userTableContainer = document.getElementById('userTable');
-                const options = {
-                    margin: 10,
-                    filename: 'users_table.pdf',
-                    image: { type: 'jpeg', quality: 0.98 },
-                    html2canvas: { scale: 2 },
-                    jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' }
-                };
+// Add an event listener to the "Export as PDF" button
+document.getElementById('exportPdfBtn').addEventListener('click', () => {
+    const userTypeFilterElement = document.getElementById('userTypeFilter');
+    const selectedUserType = userTypeFilterElement.value;
 
-                // Use html2pdf.js to generate and save the PDF
-                html2pdf(userTableContainer, options);
-            });
+    let pdfTitle = 'Users';
+
+    if (selectedUserType === 'Real') {
+        pdfTitle = 'Registered Users';
+    } else if (selectedUserType === 'Unregistered') {
+        pdfTitle = 'Unregistered Users';
+    }
+
+    const userTableContainer = document.getElementById('userTable');
+    const options = {
+        margin: 10,
+        filename: `${pdfTitle}_table.pdf`,
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' }
+    };
+
+    // Clone the user table container to avoid modifying the original content
+    const clonedTableContainer = userTableContainer.cloneNode(true);
+
+    // Remove images from the cloned content
+    clonedTableContainer.querySelectorAll('img').forEach(img => img.remove());
+
+    // Add a title element to the cloned container
+    const titleElement = document.createElement('div');
+    titleElement.style.textAlign = 'center';
+    titleElement.style.fontSize = '25px';
+    titleElement.style.marginBottom = '30px';
+    titleElement.innerHTML = `<strong>${pdfTitle}</strong>`;
+    clonedTableContainer.insertBefore(titleElement, clonedTableContainer.firstChild);
+
+    // Add a date element below the title
+    const dateElement = document.createElement('div');
+    dateElement.style.textAlign = 'right';
+    dateElement.style.fontSize = '16px';
+    dateElement.style.marginBottom = '20px';
+    const currentDate = new Date().toLocaleDateString('en-PH', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+    });
+    dateElement.innerHTML = `Date generated: <strong>${currentDate}</strong>`;
+    clonedTableContainer.insertBefore(dateElement, clonedTableContainer.firstChild);
+
+    // Use html2pdf.js to generate and save the PDF
+    html2pdf(clonedTableContainer, options);
+});
+
 
 
         
